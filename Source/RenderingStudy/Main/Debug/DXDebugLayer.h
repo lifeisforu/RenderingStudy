@@ -39,9 +39,9 @@ private:
 
 	#if defined(RS_ENABLE_DX_DEBUG)
 	// d3d12 debug.
-	ComPointer<ID3D12Debug6> DebugD3D12;
+	ComPointer<ID3D12Debug6> _DebugD3D12;
 
 	// dxgi debug.
-	ComPointer<IDXGIDebug1> DebugDxgi;
+	ComPointer<IDXGIDebug1> _DebugDxgi;
 	#endif // RS_ENABLE_DX_DEBUG
 };

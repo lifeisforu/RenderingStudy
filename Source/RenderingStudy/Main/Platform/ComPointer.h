@@ -32,7 +32,6 @@
 
 #include <type_traits>
 
-
 /// <summary>
 /// A template class for Microsoft com pointer (I like this one more the the WRL pointer)
 /// </summary>
@@ -52,12 +51,12 @@ public:
 
 	ComPointer(const ComPointer<CT>& other)
 	{
-		SetPointerAndAddRef(other.m_pointer);
+		SetPointerAndAddRef(other._Pointer);
 	}
 	ComPointer(ComPointer<CT>&& other) noexcept
 	{
-		m_pointer = other.m_pointer;
-		other.m_pointer = nullptr;
+		_Pointer = other._Pointer;
+		other._Pointer = nullptr;
 	}
 
 	~ComPointer()
@@ -68,15 +67,15 @@ public:
 	ComPointer<CT>& operator=(const ComPointer<CT>& other)
 	{
 		ClearPointer();
-		SetPointerAndAddRef(other.m_pointer);
+		SetPointerAndAddRef(other._Pointer);
 		return *this;
 	}
 	ComPointer<CT>& operator=(ComPointer<CT>&& other)
 	{
 		ClearPointer();
 
-		m_pointer = other.m_pointer;
-		other.m_pointer = nullptr;
+		_Pointer = other._Pointer;
+		other._Pointer = nullptr;
 		return *this;
 	}
 	ComPointer<CT>& operator=(CT* other)
@@ -93,24 +92,24 @@ public:
 
 	CT* GetRef()
 	{
-		if (m_pointer)
+		if (_Pointer)
 		{
-			m_pointer->AddRef();
-			return m_pointer;
+			_Pointer->AddRef();
+			return _Pointer;
 		}
 		return nullptr;
 	}
 	CT* Get()
 	{
-		return m_pointer;
+		return _Pointer;
 	}
 
 	template<typename T>
 	bool QueryInterface(ComPointer<T>& other, HRESULT* errorCode = nullptr)
 	{
-		if (m_pointer)
+		if (_Pointer)
 		{
-			HRESULT result = m_pointer->QueryInterface(IID_PPV_ARGS(&other));
+			HRESULT result = _Pointer->QueryInterface(IID_PPV_ARGS(&other));
 			if (errorCode) *errorCode = result;
 			return result == S_OK;
 		}
@@ -119,39 +118,39 @@ public:
 
 	bool operator==(const ComPointer<CT>& other)
 	{
-		return m_pointer == other.m_pointer;
+		return _Pointer == other._Pointer;
 	}
 	bool operator==(const CT* other)
 	{
-		return m_pointer == other;
+		return _Pointer == other;
 	}
 
 	CT* operator->()
 	{
-		return m_pointer;
+		return _Pointer;
 	}
 	CT** operator&()
 	{
-		return &m_pointer;
+		return &_Pointer;
 	}
 
 	operator bool()
 	{
-		return m_pointer != nullptr;
+		return _Pointer != nullptr;
 	}
 	operator CT* ()
 	{
-		return m_pointer;
+		return _Pointer;
 	}
 
 private:
 	ULONG ClearPointer()
 	{
 		ULONG newRef = 0;
-		if (m_pointer)
+		if (_Pointer)
 		{
-			newRef = m_pointer->Release();
-			m_pointer = nullptr;
+			newRef = _Pointer->Release();
+			_Pointer = nullptr;
 		}
 
 		return newRef;
@@ -159,13 +158,13 @@ private:
 
 	void SetPointerAndAddRef(CT* pointer)
 	{
-		m_pointer = pointer;
-		if (m_pointer)
+		_Pointer = pointer;
+		if (_Pointer)
 		{
-			m_pointer->AddRef();
+			_Pointer->AddRef();
 		}
 	}
 
 private:
-	CT* m_pointer = nullptr;
+	CT* _Pointer = nullptr;
 };

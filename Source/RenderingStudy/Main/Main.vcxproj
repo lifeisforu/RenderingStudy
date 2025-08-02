@@ -85,12 +85,16 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Debug\DXDebugLayer.cpp" />
+    <ClCompile Include="Debug\Log.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="Renderer\RendererD3D12.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Debug\DXDebugLayer.h" />
+    <ClInclude Include="Debug\Log.h" />
     <ClInclude Include="Platform\ComPointer.h" />
     <ClInclude Include="Platform\PlatformWindows.h" />
+    <ClInclude Include="Renderer\RendererD3D12.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
