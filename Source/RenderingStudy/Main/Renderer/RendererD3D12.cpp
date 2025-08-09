@@ -234,11 +234,11 @@ void RendererD3D12::_CheckFeatures()
 
 	#define CHECK_FEATURE(InName, OutSucceeded) \
 		hr = _DeviceD3D12->CheckFeatureSupport(D3D12_FEATURE_ ##InName, &_DeviceFeatures._ ##InName, sizeof(D3D12_FEATURE_DATA_ ##InName));\
-		if (FAILED(hr)) { LOG_HRESULT(hr, TEXT("Failed to get feature : {0}."), TEXT(#InName)); OutSucceeded = false; } else { OutSucceeded = true; }
+		if (FAILED(hr)) { /*LOG_HRESULT(hr, TEXT("Failed to get feature : {0}."), TEXT(#InName));*/ OutSucceeded = false; } else { OutSucceeded = true; }
 
 	#define CHECK_FEATURE_FOR(InName, InVar, InText, OutSucceeded) \
 		hr = _DeviceD3D12->CheckFeatureSupport(D3D12_FEATURE_ ##InName, &InVar, sizeof(D3D12_FEATURE_DATA_ ##InName));\
-		if (FAILED(hr)) { LOG_HRESULT(hr, TEXT("Failed to get feature : {0} for {1}."), TEXT(#InName), InText); OutSucceeded = false; } else { OutSucceeded = true; }
+		if (FAILED(hr)) { /*LOG_HRESULT(hr, TEXT("Failed to get feature : {0} for {1}."), TEXT(#InName), InText);*/ OutSucceeded = false; } else { OutSucceeded = true; }
 
 	bool result;
 	CHECK_FEATURE(D3D12_OPTIONS, result);
