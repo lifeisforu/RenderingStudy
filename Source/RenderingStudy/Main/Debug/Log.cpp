@@ -36,7 +36,7 @@ void OutputHRESULT(const HRESULT InHR, const TCHAR* InText)
 		FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS,
 		nullptr,
 		InHR,
-		MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
+		MAKELANGID(LANG_ENGLISH, SUBLANG_DEFAULT),
 		#if _UNICODE
 		(LPWSTR)&messageBuffer,
 		#else // NOT _UNICODE
@@ -47,17 +47,39 @@ void OutputHRESULT(const HRESULT InHR, const TCHAR* InText)
 
 	if (numChars > 0) 
 	{
-		CONSOLE_OUTPUT << TEXT("[") << messageBuffer << TEXT("]") << InText << std::endl;
+		#if _UNICODE
+		std::wstring message = messageBuffer;
+		#else // NOT _UNICODE
+		std::string message = messageBuffer;
+		#endif // UNICODE
+		TCHAR lastChar = message.at(message.length() - 1);
+		if (lastChar == TEXT('\n'))
+		{
+			message.pop_back();
+			lastChar = message.at(message.length() - 1);
+			if (lastChar == TEXT('\r'))
+			{
+				message.pop_back();
+			}
+		}
 
-		PRINT(FORMAT(TEXT("[{0}] {1}\n"), messageBuffer, InText));
+		lastChar = message.at(message.length() - 1);
+		if (lastChar == TEXT('.'))
+		{
+			message.pop_back();
+		}
+		
+		CONSOLE_OUTPUT << TEXT("[") << message << TEXT("] ") << InText << std::endl;
+
+		PRINT(FORMAT(TEXT("[{0}] {1}\n"), message, InText));
 
 		LocalFree(messageBuffer);
 	}
 	else 
 	{
-		CONSOLE_OUTPUT << TEXT("[Error : ") << GetLastError() << TEXT("]") << InText << std::endl;
+		CONSOLE_OUTPUT << TEXT("[Unknown HRESULT] Last Error : ") << GetLastError() << TEXT(", ") << InText << std::endl;
 
-		PRINT(FORMAT(TEXT("[Error : {0}] {1}\n"), GetLastError(), InText));
+		PRINT(FORMAT(TEXT("[Unknown HRESULT] Last Error : {0}, {1}\n"), GetLastError(), InText));
 	}
 }
 

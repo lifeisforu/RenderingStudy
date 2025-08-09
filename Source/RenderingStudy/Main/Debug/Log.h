@@ -48,10 +48,10 @@ extern void OutputAssertLog(const TCHAR* InExpression, const TCHAR* InFile, cons
 	if (ELogCategory::InCategory >= ELogCategory::Error) DebugBreak()
 
 /// macro for calling LogHRESULT()
-#define LOG_HRESULT(InHR, InText) OutputHRESULT(InHR, InText)
+#define LOG_HRESULT(InHR, InFormat, ...) OutputHRESULT(InHR, FORMAT(InFormat, __VA_ARGS__))
 
 /// macro for calling LogHRESULT() with assert.
-#define ASSERT_HRESULT(InHR, InText) OutputHRESULT(InHR, InText); DebugBreak()
+#define ASSERT_HRESULT(InHR, InFormat, ...) OutputHRESULT(InHR, FORMAT(InFormat, __VA_ARGS__)); DebugBreak()
 
 /// macro for calling Assert().
 #define ASSERT(InExpression, InFormat, ...) if(!(InExpression))\

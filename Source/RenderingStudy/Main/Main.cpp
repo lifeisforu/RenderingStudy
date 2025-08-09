@@ -35,9 +35,9 @@ int main()
 		return -1;
 	}
 
-	TArray<D3D_FEATURE_LEVEL> featureLevels = renderer.EnumerateFeatureLevels();
-	auto lastFeatureLevel = *featureLevels.rbegin();
-	if (renderer.CreateDevice(lastFeatureLevel) == false)
+	renderer.EnumerateFeatureLevels();
+	D3D_FEATURE_LEVEL minimumFeatureLevel = D3D_FEATURE_LEVEL_12_0;
+	if (renderer.CreateDevice(minimumFeatureLevel) == false)
 	{
 		return -1;
 	}
