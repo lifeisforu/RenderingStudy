@@ -42,17 +42,24 @@ extern void OutputAssertLog(const TCHAR* InExpression, const TCHAR* InFile, cons
 // Macros
 //-----------------------------------------------------------------------------
 
+/// macro for break.
+#define BREAK() if (IsDebuggerPresent()) (__nop(), __debugbreak())
+
 /// macro for calling OutputLog().
 #define LOG(InCategory, InFormat, ...) \
 	OutputLog(ELogCategory:: ##InCategory, TEXT(#InCategory), FORMAT(InFormat, __VA_ARGS__));\
-	if (ELogCategory::InCategory >= ELogCategory::Error) DebugBreak()
+	if (ELogCategory::InCategory >= ELogCategory::Error) BREAK()
 
 /// macro for calling LogHRESULT()
 #define LOG_HRESULT(InHR, InFormat, ...) OutputHRESULT(InHR, FORMAT(InFormat, __VA_ARGS__))
 
 /// macro for calling LogHRESULT() with assert.
-#define ASSERT_HRESULT(InHR, InFormat, ...) OutputHRESULT(InHR, FORMAT(InFormat, __VA_ARGS__)); DebugBreak()
+#define ASSERT_HRESULT(InHR, InFormat, ...) OutputHRESULT(InHR, FORMAT(InFormat, __VA_ARGS__)); BREAK()
 
-/// macro for calling Assert().
-#define ASSERT(InExpression, InFormat, ...) if(!(InExpression))\
-	{ OutputAssertLog(TEXT(#InExpression), TEXT(__FILE__), __LINE__, FORMAT(InFormat, __VA_ARGS__)); DebugBreak(); }
+/// macro for assert.
+#define ASSERT(InExpression) if (!(InExpression))\
+	{ OutputAssertLog(TEXT(#InExpression), TEXT(__FILE__), __LINE__, TEXT("")); BREAK(); }
+
+/// macro for assert with message.
+#define ASSERT_MSG(InExpression, InFormat, ...) if (!(InExpression))\
+	{ OutputAssertLog(TEXT(#InExpression), TEXT(__FILE__), __LINE__, FORMAT(InFormat, __VA_ARGS__)); BREAK(); }

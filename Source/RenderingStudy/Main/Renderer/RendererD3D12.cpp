@@ -91,7 +91,7 @@ TArray<DXGI_ADAPTER_DESC> RendererD3D12::EnumerateAdapters()
 
 	if (_FactoryDXGI == nullptr)
 	{
-		ASSERT(_FactoryDXGI != nullptr, TEXT("You must create dxgi factory first. Call RendererD3D12::CreateDXGIFactory()."));
+		ASSERT_MSG(_FactoryDXGI != nullptr, TEXT("You must create dxgi factory first. Call RendererD3D12::CreateDXGIFactory()."));
 		return adapterDescs;
 	}
 
@@ -178,7 +178,7 @@ TArray<D3D_FEATURE_LEVEL> RendererD3D12::EnumerateFeatureLevels()
 	TArray<D3D_FEATURE_LEVEL> featureLevels;
 	if (_AdapterDXGI == nullptr)
 	{
-		ASSERT(_AdapterDXGI != nullptr, TEXT("You must select an adapter first. See SelectAdapterXXX()."));
+		ASSERT_MSG(_AdapterDXGI != nullptr, TEXT("You must select an adapter first. See SelectAdapterXXX()."));
 		return featureLevels;
 	}
 
@@ -225,7 +225,7 @@ void RendererD3D12::_CheckFeatures()
 {
 	if (_DeviceD3D12 == nullptr)
 	{
-		ASSERT(_DeviceD3D12 != nullptr, TEXT("Create a device first. See CreateDevice()."));
+		ASSERT_MSG(_DeviceD3D12 != nullptr, TEXT("Create a device first. See CreateDevice()."));
 		return;
 	}
 
